@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { Pool } = require('pg');
+const mysql = require('mysql2/promise');
 require('dotenv').config();
 
 const app = express();
@@ -10,28 +10,28 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 
-// PostgreSQL connection pool
-const pool = new Pool({
+// MySQL connection pool
+const pool = mysql.createPool({
   host: process.env.DB_HOST || 'localhost',
-  port: parseInt(process.env.DB_PORT || '5432'),
+  port: parseInt(process.env.DB_PORT || '3306'),
   database: process.env.DB_NAME || 'auto_care_buddy',
-  user: process.env.DB_USER || 'postgres',
+  user: process.env.DB_USER || 'root',
   password: process.env.DB_PASSWORD || '',
   ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false,
-  max: 20,
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000,
+  waitForConnections: true,
+  connectionLimit: 20,
+  queueLimit: 0
 });
 
 // Test database connection
-pool.connect((err, client, release) => {
-  if (err) {
+pool.getConnection()
+  .then(connection => {
+    console.log('Successfully connected to MySQL database');
+    connection.release();
+  })
+  .catch(err => {
     console.error('Error connecting to the database:', err.stack);
-  } else {
-    console.log('Successfully connected to PostgreSQL database');
-    release();
-  }
-});
+  });
 
 // Database API endpoints
 app.post('/api/db/:table/select', async (req, res) => {
@@ -39,15 +39,15 @@ app.post('/api/db/:table/select', async (req, res) => {
   const { columns = '*', order_by, order_dir = 'asc', limit } = req.body;
   
   try {
-    let query = `SELECT ${columns} FROM ${table}`;
+    let query = `SELECT ${columns} FROM \`${table}\``;
     if (order_by) {
-      query += ` ORDER BY ${order_by} ${order_dir.toUpperCase()}`;
+      query += ` ORDER BY \`${order_by}\` ${order_dir.toUpperCase()}`;
     }
     if (limit) {
-      query += ` LIMIT ${limit}`;
+      query += ` LIMIT ${parseInt(limit)}`;
     }
-    const result = await pool.query(query);
-    res.json({ data: result.rows, error: null });
+    const [rows] = await pool.query(query);
+    res.json({ data: rows, error: null });
   } catch (error) {
     res.status(500).json({ data: null, error: error.message });
   }
@@ -60,16 +60,14 @@ app.post('/api/db/:table/insert', async (req, res) => {
   try {
     const items = Array.isArray(values) ? values : [values];
     const keys = Object.keys(items[0]);
-    const placeholders = items.map((_, i) => 
-      `(${keys.map((_, j) => `$${i * keys.length + j + 1}`).join(', ')})`
-    ).join(', ');
+    const placeholders = items.map(() => `(${keys.map(() => '?').join(', ')})`).join(', ');
     const allValues = items.flatMap(item => keys.map(k => item[k]));
     
-    const result = await pool.query(
-      `INSERT INTO ${table} (${keys.join(', ')}) VALUES ${placeholders} RETURNING *`,
+    const [result] = await pool.query(
+      `INSERT INTO \`${table}\` (${keys.map(k => `\`${k}\``).join(', ')}) VALUES ${placeholders}`,
       allValues
     );
-    res.json({ data: result.rows, error: null });
+    res.json({ data: { id: result.insertId, ...items[0] }, error: null });
   } catch (error) {
     res.status(500).json({ data: null, error: error.message });
   }
@@ -77,18 +75,18 @@ app.post('/api/db/:table/insert', async (req, res) => {
 
 app.post('/api/db/:table/update', async (req, res) => {
   const { table } = req.params;
-  const { values, where } = req.body;
+  const { values } = req.body;
   
   try {
     const keys = Object.keys(values).filter(k => k !== 'id');
-    const setClause = keys.map((k, i) => `"${k}" = $${i + 1}`).join(', ');
+    const setClause = keys.map(k => `\`${k}\` = ?`).join(', ');
     const allValues = [...keys.map(k => values[k]), values.id];
     
-    const result = await pool.query(
-      `UPDATE ${table} SET ${setClause} WHERE id = $${keys.length + 1} RETURNING *`,
+    const [result] = await pool.query(
+      `UPDATE \`${table}\` SET ${setClause} WHERE id = ?`,
       allValues
     );
-    res.json({ data: result.rows[0], error: null });
+    res.json({ data: result.affectedRows > 0 ? values : null, error: null });
   } catch (error) {
     res.status(500).json({ data: null, error: error.message });
   }
@@ -101,11 +99,11 @@ app.post('/api/db/:table/delete', async (req, res) => {
   try {
     let result;
     if (id) {
-      result = await pool.query(`DELETE FROM ${table} WHERE id = $1 RETURNING *`, [id]);
+      [result] = await pool.query(`DELETE FROM \`${table}\` WHERE id = ?`, [id]);
     } else {
-      result = await pool.query(`DELETE FROM ${table} RETURNING *`);
+      [result] = await pool.query(`DELETE FROM \`${table}\``);
     }
-    res.json({ data: result.rows, error: null });
+    res.json({ data: result, error: null });
   } catch (error) {
     res.status(500).json({ data: null, error: error.message });
   }
@@ -116,8 +114,8 @@ app.post('/api/db/:table/eq', async (req, res) => {
   const { column, value } = req.body;
   
   try {
-    const result = await pool.query(`SELECT * FROM ${table} WHERE "${column}" = $1`, [value]);
-    res.json({ data: result.rows, error: null });
+    const [rows] = await pool.query(`SELECT * FROM \`${table}\` WHERE \`${column}\` = ?`, [value]);
+    res.json({ data: rows, error: null });
   } catch (error) {
     res.status(500).json({ data: null, error: error.message });
   }
@@ -127,8 +125,8 @@ app.post('/api/db/:table/single', async (req, res) => {
   const { table } = req.params;
   
   try {
-    const result = await pool.query(`SELECT * FROM ${table} LIMIT 1`);
-    res.json({ data: result.rows[0] || null, error: null });
+    const [rows] = await pool.query(`SELECT * FROM \`${table}\` LIMIT 1`);
+    res.json({ data: rows[0] || null, error: null });
   } catch (error) {
     res.status(500).json({ data: null, error: error.message });
   }
