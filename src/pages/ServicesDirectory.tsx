@@ -209,7 +209,7 @@ const ServicesDirectory = () => {
 
   return (
     <>
-      <SEOHead title="Services — Wub Hair" description="Browse our full catalog of hair services, braiding, barbering and more." />
+      <SEOHead title="Services — Wub Hair" description="Browse our full catalog of hair services, braiding and more." />
 
       <div className="min-h-screen bg-background text-foreground">
         {/* Editorial Hero */}

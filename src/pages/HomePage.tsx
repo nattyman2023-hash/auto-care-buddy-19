@@ -50,7 +50,7 @@ const HomePage = () => {
     <>
       <SEOHead
         title={`${BUSINESS.name} · Hair Salon, Manchester`}
-        description={`A salon for considered hair at ${BUSINESS.address}. Barbering, hairdressing, and protective styling.`}
+        description={`A salon for considered hair at ${BUSINESS.address}. Hairdressing and protective styling.`}
         canonical="/"
         image={IMAGES.heroHome}
       />
@@ -103,7 +103,7 @@ const HomePage = () => {
                 hair.
               </h1>
               <p className="text-base md:text-lg leading-relaxed max-w-md text-muted-foreground">
-                Barbering, hairdressing, and protective styling at 174 Claremont Road. Walk in for the morning, or reserve a chair below.
+                Hairdressing and protective styling at 174 Claremont Road. Walk in for the morning, or reserve a chair below.
               </p>
               <div className="flex flex-wrap items-center gap-6 pt-2">
                 <Link to="/book">

@@ -211,7 +211,7 @@ const PublicLayout = ({ children }: { children: React.ReactNode }) => {
             <div className="md:col-span-5">
               <img src={wubhairLogo} alt={BUSINESS.name} className="h-20 md:h-24 w-auto" />
               <p className="image-caption max-w-md mt-6 not-italic">
-                A salon for considered hair, in the heart of Manchester. Barbering, hairdressing, and protective styling, by appointment or walk-in.
+                A salon for considered hair, in the heart of Manchester. Hairdressing and protective styling, by appointment or walk-in.
               </p>
             </div>
 

@@ -179,7 +179,7 @@ const LocationPage = () => {
       {/* Local SEO text */}
       <section className="container py-12 max-w-3xl">
         <p className="text-muted-foreground leading-relaxed text-center">
-          Residents of {borough.name} trust {BUSINESS.name} for world-class braiding, precision barbering, and luxury hair treatments.
+          Residents of {borough.name} trust {BUSINESS.name} for world-class braiding, precision hairdressing, and luxury hair treatments.
           Experience the Atelier standard just a short trip away at our {BUSINESS.address} location.
           Whether you need a fresh fade, intricate braids, or a complete colour transformation,
           our master stylists use professional-grade products to deliver stunning results every time.

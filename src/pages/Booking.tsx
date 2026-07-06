@@ -154,13 +154,16 @@ const Booking = () => {
 
   const disabledDays = [{ before: addDays(new Date(), 1) }, { dayOfWeek: [0] }];
 
-  /* Build candidate slot starts for the day so a job won't run past closing. */
+  /* Build candidate slot starts for the day so a job won't run past closing.
+     Services longer than 2 hours (120 min) must finish at least 2 hours before closing. */
   const candidateSlots = useMemo(() => {
     if (!selectedService) return [] as string[];
     const dur = selectedService.duration_minutes;
     const out: string[] = [];
     const step = showAllSlots ? FINE_STEP : STEP;
-    for (let m = DAY_OPEN; m + dur <= DAY_CLOSE; m += step) {
+    // If service takes >2h, block the last 2 hours of the day
+    const effectiveClose = dur > 120 ? DAY_CLOSE - 120 : DAY_CLOSE;
+    for (let m = DAY_OPEN; m + dur <= effectiveClose; m += step) {
       const h = Math.floor(m / 60).toString().padStart(2, "0");
       const mm = (m % 60).toString().padStart(2, "0");
       out.push(`${h}:${mm}`);
@@ -414,7 +417,7 @@ const Booking = () => {
     <>
       <SEOHead
         title="Reservations | Wub Hair"
-        description="Reserve a chair at Wub Hair in Manchester. Barbering, hairdressing, and protective styling."
+        description="Reserve a chair at Wub Hair in Manchester. Hairdressing and protective styling."
         canonical="/book"
         image={IMAGES.heroBooking}
       />
@@ -565,7 +568,7 @@ const Booking = () => {
                                         type="time"
                                         step={60}
                                         min="09:00"
-                                        max="19:00"
+                                        max={selectedService.duration_minutes > 120 ? "17:00" : "19:00"}
                                         value={customTime}
                                         onChange={(e) => { setCustomTime(e.target.value); setCustomTimeError(null); }}
                                         className="flex-1 border border-border bg-card px-3 py-2 text-sm rounded-none focus:outline-none focus:border-foreground"
@@ -576,7 +579,9 @@ const Booking = () => {
                                           if (!customTime || !selectedService) return;
                                           const [h, m] = customTime.split(":").map(Number);
                                           const mins = h * 60 + m;
-                                          if (mins < DAY_OPEN || mins + selectedService.duration_minutes > DAY_CLOSE) {
+                                          // Services longer than 2h must finish at least 2h before closing
+                                          const effectiveClose = selectedService.duration_minutes > 120 ? DAY_CLOSE - 120 : DAY_CLOSE;
+                                          if (mins < DAY_OPEN || mins + selectedService.duration_minutes > effectiveClose) {
                                             setCustomTimeError("Outside salon hours");
                                             return;
                                           }

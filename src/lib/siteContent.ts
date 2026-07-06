@@ -42,10 +42,10 @@ export const BOROUGHS: Borough[] = [
     slug: "manchester",
     name: "Manchester",
     intro:
-      "Looking for a professional hair salon in Manchester? Wub Hair offers barbering, hairdressing and braiding services from our salon at 174 Claremont Road, M14 4TT.",
-    metaTitle: "Hair Salon Manchester | Barbershop & Braiding | Wub Hair",
+      "Looking for a professional hair salon in Manchester? Wub Hair offers hairdressing and braiding services from our salon at 174 Claremont Road, M14 4TT.",
+    metaTitle: "Hair Salon Manchester | Hairdressing & Braiding | Wub Hair",
     metaDescription:
-      "Professional hair salon in Manchester. Barbering, hairdressing, braiding & hair treatments. Book online now.",
+      "Professional hair salon in Manchester. Hairdressing, braiding & hair treatments. Book online now.",
     image: "https://images.unsplash.com/photo-1515586838455-8f8f940d6853?auto=format&fit=crop&w=1200&q=80",
     faqs: [
       { q: "Where is your salon located?", a: "We're at 174 Claremont Road, Manchester M14 4TT — easy to reach from all Manchester postcodes." },
@@ -57,8 +57,8 @@ export const BOROUGHS: Borough[] = [
     slug: "fallowfield",
     name: "Fallowfield",
     intro:
-      "Serving Fallowfield and surrounding areas from our Claremont Road salon. All hair services — barbering, braids, cuts, colour and treatments — available with easy walk-in or online booking.",
-    metaTitle: "Hair Salon Fallowfield | Braiding & Barbershop | Wub Hair",
+      "Serving Fallowfield and surrounding areas from our Claremont Road salon. All hair services — braids, cuts, colour and treatments — available with easy walk-in or online booking.",
+    metaTitle: "Hair Salon Fallowfield | Braiding & Hairdressing | Wub Hair",
     metaDescription:
       "Professional hair salon serving Fallowfield. Braiding, fades, cuts & colour. Book online today.",
     image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=1200&q=80",
@@ -74,7 +74,7 @@ export const BOROUGHS: Borough[] = [
       "Rusholme residents love Wub Hair for expert braiding, fades and hair treatments. Visit our salon on Claremont Road — just a short walk away.",
     metaTitle: "Hair Salon Rusholme | Braids & Fades | Wub Hair",
     metaDescription:
-      "Expert hair salon serving Rusholme. Braiding, barbering & hairdressing. Walk-ins welcome. Book now.",
+      "Expert hair salon serving Rusholme. Braiding & hairdressing. Walk-ins welcome. Book now.",
     image: "https://images.unsplash.com/photo-1605497788044-5a32c7078486?auto=format&fit=crop&w=1200&q=80",
     faqs: [
       { q: "Do you do cornrows?", a: "Yes! We specialise in all braiding styles including cornrows, box braids, twists and more." },
@@ -85,7 +85,7 @@ export const BOROUGHS: Borough[] = [
     slug: "longsight",
     name: "Longsight",
     intro:
-      "Serving Longsight and Levenshulme from our Manchester salon. Professional barbering, hairdressing and braiding at affordable prices.",
+      "Serving Longsight and Levenshulme from our Manchester salon. Professional hairdressing and braiding at affordable prices.",
     metaTitle: "Hair Salon Longsight | Affordable Styling | Wub Hair",
     metaDescription:
       "Affordable hair salon serving Longsight. Fades, braids, cuts & colour. Book your appointment now.",
@@ -99,8 +99,8 @@ export const BOROUGHS: Borough[] = [
     slug: "moss-side",
     name: "Moss Side",
     intro:
-      "Moss Side clients trust Wub Hair for expert braiding, barbering and hair treatments. Just a short trip to our Claremont Road location.",
-    metaTitle: "Hair Salon Moss Side | Braiding & Barbering | Wub Hair",
+      "Moss Side clients trust Wub Hair for expert braiding and hair treatments. Just a short trip to our Claremont Road location.",
+    metaTitle: "Hair Salon Moss Side | Braiding & Hairdressing | Wub Hair",
     metaDescription:
       "Trusted hair salon serving Moss Side. Expert braiding, fades & styling. Book today.",
     image: "https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=1200&q=80",
@@ -116,7 +116,7 @@ export const BOROUGHS: Borough[] = [
       "Didsbury residents — experience premium hair services at Wub Hair. From precision fades to intricate braids, we've got you covered.",
     metaTitle: "Hair Salon Didsbury | Premium Styling | Wub Hair",
     metaDescription:
-      "Premium hair salon serving Didsbury. Braiding, barbering, colour & treatments. Book online.",
+      "Premium hair salon serving Didsbury. Braiding, colour & treatments. Book online.",
     image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=1200&q=80",
     faqs: [
       { q: "Do you do balayage and highlights?", a: "Yes — our hairdressing services include all colour techniques." },
@@ -140,19 +140,6 @@ export interface ServiceInfo {
 }
 
 export const SERVICES: ServiceInfo[] = [
-  {
-    slug: "barbering",
-    name: "Barbering",
-    shortDesc: "Precision fades, beard trims and classic cuts.",
-    longDesc:
-      "Our skilled barbers deliver precision fades, skin fades, beard sculpting and classic cuts. Whether you want a sharp line-up or a textured crop, we've got you covered. Walk-ins welcome or book ahead to skip the wait.",
-    included: ["Skin fade / taper fade", "Beard trim & shape", "Line-up & edge-up", "Hot towel finish"],
-    metaTitle: "Barbershop Manchester | Fades & Beard Trims | Wub Hair",
-    metaDescription:
-      "Expert barbering in Manchester. Precision fades, beard trims & classic cuts. Walk-ins welcome. Book now.",
-    image: "https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=1200&q=80",
-    durationMinutes: 45,
-  },
   {
     slug: "hairdressing",
     name: "Hairdressing",
