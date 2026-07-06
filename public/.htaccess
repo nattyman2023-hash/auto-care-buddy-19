@@ -1,0 +1,10 @@
+Options -Indexes -MultiViews
+RewriteEngine On
+
+# If the request is for a real file or directory, serve it directly
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Otherwise fall back to index.html so React Router can handle the route
+RewriteRule ^ index.html [L]
