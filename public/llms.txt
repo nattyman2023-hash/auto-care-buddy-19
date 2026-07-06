@@ -1,0 +1,34 @@
+# Wub Hair
+
+> Professional barbershop, hairdresser and braiding specialist in Manchester. Fades, cuts, colour, box braids, cornrows and treatments. Online booking available.
+
+## Pages
+
+- [Home](/): Salon overview, featured services and online booking entry point.
+- [Book](/book): Three-step booking wizard with stylist and time selection.
+- [Services](/services): Full directory of barbering, hairdressing, braiding and treatment services.
+- [Shop](/shop): Hair care products and retail.
+- [Contact](/contact): Phone, WhatsApp, email and salon address.
+
+## Service categories
+
+- [Barbershop](/barbershop): Fades, cuts and grooming for men.
+- [Braiding](/braiding): Box braids, cornrows and protective styles.
+- [Hair Studio](/hair-studio): Cuts, colour and styling.
+- [Kids](/kids): Children's haircuts and styling.
+
+## Service detail
+
+- [Barbering](/services/barbering)
+- [Hairdressing](/services/hairdressing)
+- [Braiding](/services/braiding)
+- [Hair Treatments](/services/hair-treatments)
+
+## Areas served
+
+- [Manchester](/areas/manchester)
+- [Fallowfield](/areas/fallowfield)
+- [Rusholme](/areas/rusholme)
+- [Longsight](/areas/longsight)
+- [Moss Side](/areas/moss-side)
+- [Didsbury](/areas/didsbury)

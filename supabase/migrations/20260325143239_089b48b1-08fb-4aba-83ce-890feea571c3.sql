@@ -1,0 +1,1 @@
+ALTER TABLE public.service_catalog ADD COLUMN IF NOT EXISTS duration_minutes integer DEFAULT 45;
