@@ -1,43 +1,102 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-GB">
   <head>
-  <meta charset="UTF-8" />
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#FBF4EE">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Wub Hair">
-    <link rel="apple-touch-icon" href="/pwa-192x192.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="/pwa-192x192.png">
-    <link rel="shortcut icon" href="/favicon.ico">
-    <link rel="manifest" href="/manifest.webmanifest">
+    <meta name="theme-color" content="#FBF4EE" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Wub Hair" />
+    <link rel="apple-touch-icon" href="/pwa-192x192.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/pwa-192x192.png" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="manifest" href="/manifest.webmanifest" />
     <meta name="google-site-verification" content="6I0Y2uoaPp7NbuwhaEts4e7F60uW1qnJ_qJVNNso9ME" />
-    <title>Wub Hair | Hairdresser &amp; Braiding Manchester</title>
-    <meta name="description" content="Professional hairdresser and braiding specialist in Manchester. Fades, cuts, colour, box braids, cornrows &amp; more. Book online now.">
-    <meta name="robots" content="index, follow">
+
+    <title>Wub Hair | Hairdresser & Braiding Manchester</title>
+    <meta name="description" content="Professional hairdresser and braiding specialist in Manchester. Fades, cuts, colour, box braids, cornrows & more. Book online now." />
+    <meta name="robots" content="index, follow" />
     <meta name="author" content="Wub Hair" />
+
+    <link rel="canonical" href="https://wubhair.com/" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://wubhair.com/" />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:site_name" content="Wub Hair" />
+    <meta property="og:title" content="Wub Hair | Hairdresser & Braiding Manchester" />
+    <meta property="og:description" content="Professional hairdresser and braiding specialist in Manchester. Fades, cuts, colour, box braids, cornrows & more. Book online now." />
+    <meta property="og:image" content="https://wubhair.com/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://wubhair.com/" />
+    <meta name="twitter:title" content="Wub Hair | Hairdresser & Braiding Manchester" />
+    <meta name="twitter:description" content="Professional hairdresser and braiding specialist in Manchester. Fades, cuts, colour, box braids, cornrows & more. Book online now." />
+    <meta name="twitter:image" content="https://wubhair.com/og-image.png" />
+
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..900,0..100&family=Playfair+Display:wght@400;600;700;800&family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="canonical" href="https://wubhair.co.uk/" />
 
-    <meta property="og:type" content="website" />
-    
-    
-    
-    
-    <meta name="twitter:card" content="summary_large_image" />
-
+    <!-- Structured Data: HairSalon -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "HairSalon",
       "name": "Wub Hair",
       "description": "Professional hairdresser and braiding specialist in Manchester",
-      "areaServed": ["Manchester", "Fallowfield", "Rusholme", "Longsight", "Moss Side", "Didsbury"],
-      "serviceType": ["Hairdressing", "Braiding", "Hair Treatments"],
+      "url": "https://wubhair.com/",
       "telephone": "+447472397993",
       "email": "contact@wubhair.co.uk",
+      "priceRange": "\u00a3\u00a3",
+      "image": "https://wubhair.com/og-image.png",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "174 Claremont Road",
+        "addressLocality": "Manchester",
+        "addressRegion": "Greater Manchester",
+        "postalCode": "M14 4TT",
+        "addressCountry": "GB"
+      },
+      "areaServed": [
+        { "@type": "City", "name": "Manchester" },
+        { "@type": "City", "name": "Fallowfield" },
+        { "@type": "City", "name": "Rusholme" },
+        { "@type": "City", "name": "Longsight" },
+        { "@type": "City", "name": "Moss Side" },
+        { "@type": "City", "name": "Didsbury" }
+      ],
+      "serviceType": ["Hairdressing", "Braiding", "Hair Treatments"],
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+          "opens": "09:00",
+          "closes": "19:00"
+        }
+      ],
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 53.4521,
+        "longitude": -2.2254
+      }
+    }
+    </script>
+
+    <!-- Structured Data: LocalBusiness -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Wub Hair",
+      "url": "https://wubhair.com/",
+      "telephone": "+447472397993",
+      "image": "https://wubhair.com/og-image.png",
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "174 Claremont Road",
@@ -48,18 +107,7 @@
       }
     }
     </script>
-    
-  
-  
-  
-  
-  <meta property="og:image" content="https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/afc83cc4-623a-4676-8e82-d8d994e0b82b/id-preview-2efe4bfe--9d3faf31-d6f7-4f13-be70-ab5ea8241da7.lovable.app-1774449637064.png">
-  <meta name="twitter:image" content="https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/afc83cc4-623a-4676-8e82-d8d994e0b82b/id-preview-2efe4bfe--9d3faf31-d6f7-4f13-be70-ab5ea8241da7.lovable.app-1774449637064.png">
-  <meta property="og:title" content="Wub Hair | Hairdresser &amp; Braiding Manchester">
-  <meta name="twitter:title" content="Wub Hair | Hairdresser &amp; Braiding Manchester">
-  <meta property="og:description" content="Professional hairdresser and braiding specialist in Manchester. Fades, cuts, colour, box braids, cornrows &amp; more. Book online now.">
-  <meta name="twitter:description" content="Professional hairdresser and braiding specialist in Manchester. Fades, cuts, colour, box braids, cornrows &amp; more. Book online now.">
-</head>
+  </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>

@@ -1,0 +1,104 @@
+# Wub Hair - Apache config for Hostinger shared hosting
+# Place this file in the public_html root alongside the built frontend assets
+
+# Enable rewrite engine for SPA routing + clean URLs
+RewriteEngine On
+
+# Force HTTPS (Hostinger provides free SSL)
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+# Redirect www to non-www (canonical domain)
+RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+
+# ---- SPA routing: serve index.html for any non-file, non-directory request ----
+RewriteBase /
+RewriteRule ^index\.html$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.html [L]
+
+# ---- SEO: Explicit HTML routing for search engines ----
+# These rules ensure search engines see clean URLs as HTML documents
+# by internally rewriting them to index.html (handled by React Router)
+
+# Primary pages
+RewriteRule ^book$ /index.html [L]
+RewriteRule ^book/(.*)$ /index.html [L]
+RewriteRule ^shop$ /index.html [L]
+RewriteRule ^services$ /index.html [L]
+RewriteRule ^about$ /index.html [L]
+RewriteRule ^contact$ /index.html [L]
+RewriteRule ^appointments$ /index.html [L]
+RewriteRule ^auth$ /index.html [L]
+RewriteRule ^admin$ /index.html [L]
+RewriteRule ^admin/(.*)$ /index.html [L]
+
+# ---- Caching: long-lived cache for hashed assets, short for HTML ----
+<IfModule mod_expires.c>
+  ExpiresActive On
+
+  # CSS and JavaScript (Vite outputs hashed filenames - cache aggressively)
+  <FilesMatch "\.(css|js)$">
+    ExpiresDefault "access plus 1 year"
+    Header append Cache-Control "public, immutable"
+  </FilesMatch>
+
+  # Images
+  <FilesMatch "\.(png|jpg|jpeg|gif|ico|svg|webp)$">
+    ExpiresDefault "access plus 1 year"
+    Header append Cache-Control "public"
+  </FilesMatch>
+
+  # Fonts
+  <FilesMatch "\.(woff|woff2|ttf|otf|eot)$">
+    ExpiresDefault "access plus 1 year"
+    Header append Cache-Control "public, immutable"
+  </FilesMatch>
+
+  # HTML - short cache so new deploys are visible immediately
+  <FilesMatch "\.html$">
+    ExpiresDefault "access plus 0 seconds"
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+
+  # Service worker - short cache
+  <FilesMatch "^(wub-app-sw\.js|sw\.js)$">
+    ExpiresDefault "access plus 0 seconds"
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+</IfModule>
+
+# ---- Compression ----
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript
+  AddOutputFilterByType DEFLATE application/javascript application/json application/xml
+  AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# ---- Security headers ----
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set X-XSS-Protection "1; mode=block"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+  # HSTS (uncomment once you've confirmed HTTPS works)
+  # Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+</IfModule>
+
+# ---- Sitemap and robots.txt are served directly ----
+<FilesMatch "^(sitemap\.xml|robots\.txt)$">
+  ExpiresDefault "access plus 1 hour"
+  Header set Cache-Control "public"
+</FilesMatch>
+
+# ---- Deny access to hidden files ----
+<FilesMatch "^\.">
+  Order allow,deny
+  Deny from all
+</FilesMatch>
+
+# ---- Custom 404 (optional - React Router handles most 404s) ----
+ErrorDocument 404 /index.html
