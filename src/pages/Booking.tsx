@@ -69,7 +69,6 @@ const Booking = () => {
     email: "",
   });
   const [draftId, setDraftId] = useState<string | null>(null);
-  const [depositChoice, setDepositChoice] = useState<"pay" | "skip">("pay");
   const [referencePhotos, setReferencePhotos] = useState<File[]>([]);
   const [selectedAddonIds, setSelectedAddonIds] = useState<string[]>([]);
   const [addonOptions, setAddonOptions] = useState<AddonOption[]>([]);
@@ -207,10 +206,7 @@ const Booking = () => {
           address: BUSINESS.address, postcode: "",
         },
         hair_profile: { preference: "", texture: "", goal: "" },
-        deposit: depositChoice === "pay" ? {
-          required: true,
-          amount: Math.round(grandTotal * 0.10 * 100) / 100,
-        } : { required: false, amount: 0 },
+        deposit: { required: false, amount: 0 },
         job: {
           type: "garage", service_type: "service", scheduled_at: scheduledAt,
           service_catalog_id: selectedService.id,
@@ -248,20 +244,6 @@ const Booking = () => {
         }
       }
 
-      if (depositChoice === "pay" && jobId) {
-        // Get Stripe checkout URL
-        const { data: checkoutData, error: checkoutError } = await supabase.functions.invoke(
-          "create-deposit-checkout",
-          { body: { job_id: jobId, amount: payload.deposit.amount, service_name: selectedService.name } }
-        );
-        if (checkoutError || checkoutData?.error) {
-          toast.error(checkoutData?.error || checkoutError?.message || "Couldn't open payment page");
-        } else if (checkoutData?.url) {
-          if (draftId) await supabase.from("booking_drafts").update({ completed: true }).eq("id", draftId);
-          window.location.href = checkoutData.url;
-          return;
-        }
-      }
 
       setDone(true);
       if (draftId) await supabase.from("booking_drafts").update({ completed: true }).eq("id", draftId);
@@ -690,64 +672,13 @@ const Booking = () => {
                     </div>
                   </div>
 
-                  {/* Deposit choice */}
-                  {selectedService && (() => {
-                    const depositAmt = Math.round(selectedService.base_price * 0.10 * 100) / 100;
-                    return (
-                      <div className="rounded-xl border-2 border-primary/30 bg-gradient-to-br from-primary/5 to-accent/5 p-5 space-y-4">
-                        <div className="flex items-start gap-3">
-                          <Sparkles className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                          <div>
-                            <h3 className="font-bold text-base">Secure your slot with a 10% deposit</h3>
-                            <p className="text-sm text-muted-foreground mt-1">
-                              Fully credited to your final bill. Refundable up to 24h before your appointment.
-                            </p>
-                          </div>
-                        </div>
-                        <ul className="space-y-1.5 text-sm pl-8 text-muted-foreground">
-                          <li className="flex items-center gap-2"><CheckCircle className="h-3.5 w-3.5 text-accent" /> Locks in your stylist and chair</li>
-                          <li className="flex items-center gap-2"><CheckCircle className="h-3.5 w-3.5 text-accent" /> Skip the queue at checkout</li>
-                          <li className="flex items-center gap-2"><CheckCircle className="h-3.5 w-3.5 text-accent" /> Most clients choose this</li>
-                        </ul>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                          <button
-                            type="button"
-                            onClick={() => setDepositChoice("pay")}
-                            className={cn(
-                              "rounded-lg border-2 p-3 text-left transition-all",
-                              depositChoice === "pay"
-                                ? "border-primary bg-primary/10 shadow-md"
-                                : "border-border hover:border-primary/40"
-                            )}
-                          >
-                            <p className="font-semibold text-sm">Pay £{depositAmt.toFixed(2)} deposit</p>
-                            <p className="text-xs text-muted-foreground">Recommended</p>
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => setDepositChoice("skip")}
-                            className={cn(
-                              "rounded-lg border-2 p-3 text-left transition-all",
-                              depositChoice === "skip"
-                                ? "border-primary bg-primary/10"
-                                : "border-border hover:border-primary/40"
-                            )}
-                          >
-                            <p className="font-semibold text-sm">Book without deposit</p>
-                            <p className="text-xs text-muted-foreground">Pay in full at the salon</p>
-                          </button>
-                        </div>
-                      </div>
-                    );
-                  })()}
-
                   <Button
                     size="lg"
                     className="w-full"
                     onClick={handleSubmit}
                     disabled={loading || !customerForm.name || !customerForm.phone}
                   >
-                    {loading ? "Confirming…" : depositChoice === "pay" ? "Continue to deposit payment" : "Confirm booking"}
+                    {loading ? "Confirming…" : "Confirm booking"}
                   </Button>
                 </div>
               )}

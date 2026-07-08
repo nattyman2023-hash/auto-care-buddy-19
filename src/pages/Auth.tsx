@@ -100,7 +100,7 @@ const Auth = () => {
     setLoading(false);
     if (error) toast.error(error.message);
     else {
-      toast.success("Check your email to confirm your account, then sign in below.");
+      toast.success("Account created! Sign in below to continue.");
       setSignupEmail("");
       setSignupPassword("");
       setSignupName("");
@@ -241,7 +241,7 @@ const Auth = () => {
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="signup-password">Password</Label>
-                        <Input id="signup-password" type="password" value={signupPassword} onChange={(e) => setSignupPassword(e.target.value)} required minLength={6} />
+                        <Input id="signup-password" type="password" value={signupPassword} onChange={(e) => setSignupPassword(e.target.value)} required minLength={8} />
                       </div>
                       <Button type="submit" className="w-full" disabled={loading}>
                         {loading ? "Creating account…" : "Create Account"}

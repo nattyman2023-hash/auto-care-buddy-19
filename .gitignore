@@ -12,6 +12,16 @@ dist
 dist-ssr
 *.local
 
+# Secrets - never commit real credentials
+server/.env
+api/.env
+.env.local
+.env.production
+push-database.cjs
+
+# Uploaded user content (job photos, receipts, site images)
+server/uploads/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

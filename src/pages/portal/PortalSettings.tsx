@@ -36,7 +36,7 @@ const PortalSettings = () => {
 
   const changePassword = async () => {
     if (pwForm.newPw !== pwForm.confirm) { toast.error("Passwords don't match"); return; }
-    if (pwForm.newPw.length < 6) { toast.error("Password must be at least 6 characters"); return; }
+    if (pwForm.newPw.length < 8) { toast.error("Password must be at least 8 characters"); return; }
     const { error } = await supabase.auth.updateUser({ password: pwForm.newPw });
     if (error) { toast.error(error.message); return; }
     toast.success("Password updated");
